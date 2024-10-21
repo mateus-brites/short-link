@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgres_api:
+    container_name: db_api
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=api
