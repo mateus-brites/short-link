@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { IUsersRepository } from './repository/users-repository.interface';
+import { hash } from 'bcryptjs';
+import { userAlreadyExist } from 'src/errors/main';
 
 @Injectable()
 export class UsersService {
@@ -8,19 +10,23 @@ export class UsersService {
     @Inject('UsersRepository')
     private readonly usersRepository: IUsersRepository,
   ) {}
-  create(createUserDto: CreateUserDto) {
-    return this.usersRepository.create(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    const userExist = this.usersRepository.findByEmail(createUserDto.email);
+
+    if (userExist) {
+      throw userAlreadyExist();
+    }
+
+    const passwordHashed = await hash(createUserDto.password, 8);
+    console.log(createUserDto);
+    const user: CreateUserDto = {
+      email: createUserDto.email,
+      password: passwordHashed,
+    };
+    return this.usersRepository.create(user);
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async findOne(email) {
+    return this.usersRepository.findByEmail(email);
   }
 }
