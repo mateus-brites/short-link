@@ -48,7 +48,12 @@ export class ShortUrlController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shortUrlService.remove(+id);
+  @UseGuards(AuthGuard)
+  remove(
+    @Param('id') id: string,
+    @CurrentUser()
+    user: JwtPayloadDto,
+  ) {
+    return this.shortUrlService.remove(id, user);
   }
 }

@@ -14,3 +14,10 @@ export const UnauthorizedException = () => {
     HttpStatus.BAD_REQUEST,
   );
 };
+
+export const UrlNotFoundException = () => {
+  return new HttpException(
+    errorsMessage.AUTHENTITATION_FAILED,
+    HttpStatus.NOT_FOUND,
+  );
+};
