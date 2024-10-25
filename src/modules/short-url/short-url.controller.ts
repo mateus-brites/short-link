@@ -22,11 +22,10 @@ export class ShortUrlController {
   constructor(private readonly shortUrlService: ShortUrlService) {}
 
   @Post()
-  @UseGuards(AuthGuard)
   create(
     @Body() createShortUrlDto: CreateShortUrlDto,
     @CurrentUser()
-    user: JwtPayloadDto,
+    user?: JwtPayloadDto,
   ) {
     console.log({ user });
     return this.shortUrlService.create(createShortUrlDto, user);

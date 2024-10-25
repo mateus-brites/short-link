@@ -14,11 +14,21 @@ export class ShortUrlService {
     private readonly shortUrlRepository: IShortUrlRepository,
   ) {}
   async create(createShortUrlDto: CreateShortUrlDto, user: JwtPayloadDto) {
+    if (user) {
+      const short = nanoid(6);
+      const shortedUrl = this.shortUrlRepository.create(
+        createShortUrlDto.url,
+        short,
+        user.id,
+      );
+      return shortedUrl;
+    }
+
     const short = nanoid(6);
     const shortedUrl = this.shortUrlRepository.create(
       createShortUrlDto.url,
       short,
-      user.id,
+      null,
     );
     return shortedUrl;
   }
