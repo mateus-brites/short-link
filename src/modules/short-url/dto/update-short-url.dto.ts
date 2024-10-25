@@ -5,4 +5,5 @@ import { ShortUrl } from '../entities/short-url.entity';
 export class UpdateShortUrlDto {
   url?: string;
   clicks?: number;
+  updated_at?: Date;
 }

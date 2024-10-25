@@ -45,20 +45,19 @@ export class ShortUrlService {
     updateShortUrlDto: UpdateShortUrlDto,
     user: JwtPayloadDto,
   ) {
-    console.log(id);
-    console.log(user);
     const shortUrl = await this.shortUrlRepository.findByIdAndUserId(
       user.id,
       id,
     );
 
-    console.log('-->', { shortUrl });
-
     if (!shortUrl) {
       throw UrlNotFoundException();
     }
 
-    return this.shortUrlRepository.update(id, { url: updateShortUrlDto.url });
+    return this.shortUrlRepository.update(id, {
+      url: updateShortUrlDto.url,
+      updated_at: new Date(),
+    });
   }
 
   async remove(id: string, user: JwtPayloadDto) {
