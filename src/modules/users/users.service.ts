@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { IUsersRepository } from './repository/users-repository.interface';
+import { IUsersRepository } from './repositories/users-repository.interface';
 import { hash } from 'bcryptjs';
 import { userAlreadyExist } from 'src/errors/main';
 
@@ -18,7 +18,6 @@ export class UsersService {
     }
 
     const passwordHashed = await hash(createUserDto.password, 8);
-    console.log(createUserDto);
     const user: CreateUserDto = {
       email: createUserDto.email,
       password: passwordHashed,

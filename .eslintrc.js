@@ -1,5 +1,8 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
+  presets: [
+    ["@babel/preset-env", { "modules": false }]
+  ],
   parserOptions: {
     project: 'tsconfig.json',
     tsconfigRootDir: __dirname,

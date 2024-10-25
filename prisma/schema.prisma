@@ -17,4 +17,20 @@ model User {
   id       String @id @default(uuid())
   email    String @unique
   password String
+
+  ShortUrl ShortUrl[]
+}
+
+model ShortUrl {
+  id         String    @id @default(uuid())
+  url        String
+  shorting   String
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  clicks     Int
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+
+  @@map("short_url")
 }
