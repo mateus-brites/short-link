@@ -23,8 +23,8 @@ export class ShortUrlService {
     return shortedUrl;
   }
 
-  findAll() {
-    return `This action returns all shortUrl`;
+  async findAll(user: JwtPayloadDto) {
+    return this.shortUrlRepository.findByUserId(user.id);
   }
 
   async findOne(url: string, res: Response) {

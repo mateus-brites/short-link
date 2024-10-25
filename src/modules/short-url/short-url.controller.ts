@@ -33,8 +33,12 @@ export class ShortUrlController {
   }
 
   @Get()
-  findAll() {
-    return this.shortUrlService.findAll();
+  @UseGuards(AuthGuard)
+  findAll(
+    @CurrentUser()
+    user: JwtPayloadDto,
+  ) {
+    return this.shortUrlService.findAll(user);
   }
 
   @Get(':url')
