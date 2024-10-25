@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import { IShortUrlRepository } from './repositories/short-url.interface.repository';
 import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto';
 import { UrlNotFoundException } from 'src/errors/main';
+import { Response } from 'express';
 
 @Injectable()
 export class ShortUrlService {
@@ -26,17 +27,41 @@ export class ShortUrlService {
     return `This action returns all shortUrl`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shortUrl`;
+  async findOne(url: string, res: Response) {
+    const shortUrl = await this.shortUrlRepository.findByShort(url);
+
+    if (!shortUrl) {
+      throw UrlNotFoundException();
+    }
+
+    await this.shortUrlRepository.update(shortUrl.id, {
+      clicks: shortUrl.clicks + 1,
+    });
+    res.redirect(shortUrl.url);
   }
 
-  update(id: number, updateShortUrlDto: UpdateShortUrlDto) {
-    return `This action updates a #${id} shortUrl`;
+  async update(
+    id: string,
+    updateShortUrlDto: UpdateShortUrlDto,
+    user: JwtPayloadDto,
+  ) {
+    console.log(id);
+    console.log(user);
+    const shortUrl = await this.shortUrlRepository.findByIdAndUserId(
+      user.id,
+      id,
+    );
+
+    console.log('-->', { shortUrl });
+
+    if (!shortUrl) {
+      throw UrlNotFoundException();
+    }
+
+    return this.shortUrlRepository.update(id, { url: updateShortUrlDto.url });
   }
 
   async remove(id: string, user: JwtPayloadDto) {
-    console.log({ user });
-    console.log(id);
     const shortUrl = this.shortUrlRepository.findByIdAndUserId(id, user.id);
 
     if (!shortUrl) {

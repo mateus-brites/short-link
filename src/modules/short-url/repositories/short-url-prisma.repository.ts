@@ -7,16 +7,19 @@ import { PrismaService } from 'src/modules/prisma/prisma.service';
 @Injectable()
 export class PrismaShortUrlRepository implements IShortUrlRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  findByIdAndUserId(userId: string, id: string): Promise<ShortUrl> {
-    const short = this.prismaService.shortUrl.findFirst({
-      where: { id, userId },
+  async findByIdAndUserId(userId: string, id: string): Promise<ShortUrl> {
+    const short = await this.prismaService.shortUrl.findFirst({
+      where: { id, userId, deleted_at: null },
     });
 
     console.log({ short });
+
     return short;
   }
   async findByUserId(userId: string): Promise<ShortUrl[]> {
-    return await this.prismaService.shortUrl.findMany({ where: { userId } });
+    return await this.prismaService.shortUrl.findMany({
+      where: { userId, deleted_at: null },
+    });
   }
   async create(url: string, short: string, userId: string): Promise<ShortUrl> {
     const shortUrl = await this.prismaService.shortUrl.create({
@@ -28,16 +31,21 @@ export class PrismaShortUrlRepository implements IShortUrlRepository {
 
   findByShort(short: string): Promise<ShortUrl> {
     return this.prismaService.shortUrl.findFirst({
-      where: { shorting: short },
+      where: { shorting: short, deleted_at: null },
     });
   }
 
   async delete(id: string): Promise<void> {
-    await this.prismaService.shortUrl.delete({ where: { id } });
+    await this.prismaService.shortUrl.update({
+      where: { id },
+      data: { deleted_at: new Date() },
+    });
   }
 
   findById(id: string): Promise<ShortUrl> {
-    return this.prismaService.shortUrl.findFirst({ where: { id } });
+    return this.prismaService.shortUrl.findFirst({
+      where: { id, deleted_at: null },
+    });
   }
   async update(id: string, data: UpdateShortUrlDto): Promise<ShortUrl> {
     const updated = await this.prismaService.shortUrl.update({

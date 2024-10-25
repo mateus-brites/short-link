@@ -16,8 +16,5 @@ export const UnauthorizedException = () => {
 };
 
 export const UrlNotFoundException = () => {
-  return new HttpException(
-    errorsMessage.AUTHENTITATION_FAILED,
-    HttpStatus.NOT_FOUND,
-  );
+  return new HttpException(errorsMessage.URL_NOT_FOUND, HttpStatus.NOT_FOUND);
 };
