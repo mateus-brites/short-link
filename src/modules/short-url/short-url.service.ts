@@ -16,21 +16,21 @@ export class ShortUrlService {
   async create(createShortUrlDto: CreateShortUrlDto, user: JwtPayloadDto) {
     if (user) {
       const short = nanoid(6);
-      const shortedUrl = this.shortUrlRepository.create(
+      const shortedUrl = await this.shortUrlRepository.create(
         createShortUrlDto.url,
         short,
         user.id,
       );
-      return shortedUrl;
+      return `${process.env.BASE_URL}/${shortedUrl.shorting}`;
     }
 
     const short = nanoid(6);
-    const shortedUrl = this.shortUrlRepository.create(
+    const shortedUrl = await this.shortUrlRepository.create(
       createShortUrlDto.url,
       short,
       null,
     );
-    return shortedUrl;
+    return `${process.env.BASE_URL}/${shortedUrl.shorting}`;
   }
 
   async findAll(user: JwtPayloadDto) {

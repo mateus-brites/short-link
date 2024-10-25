@@ -16,7 +16,9 @@ import { AuthGuard } from '../auth/auth.guard';
 import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('SHORT URL')
 @Controller('short-url')
 export class ShortUrlController {
   constructor(private readonly shortUrlService: ShortUrlService) {}

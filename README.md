@@ -1,73 +1,48 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Encurtador de URL
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Esta aplicação foi criada para resolver o desafio de backend de encurtamento de URLs.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Sobre o Sistema
 
-## Description
+O intuito é construir um sistema que encurte as URLs.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Requisitos
 
-## Installation
+- **Desenvolvimento**: Implementado com NodeJS na última versão estável, construído como API REST.
+- **Escalabilidade**: O sistema será implementado em uma infraestrutura que escala verticalmente.
+- **Cadastro e Autenticação de Usuários**: O sistema deve possibilitar o cadastro de usuários e a autenticação dos mesmos.
+- **Encurtamento de URLs**: A partir de uma URL enviada, ela deve ser encurtada para no máximo 6 caracteres.  
+  **Exemplo**:  
+  Entrada: `https://teddy360.com.br/material/marco-legal-das-garantias-sancionado-entenda-o-que-muda/`  
+  Saída: `http://localhost/aZbKq7`
+- **Requisitos de Acesso**:
+  - Qualquer um pode solicitar que a URL seja encurtada.
+  - Deve haver apenas um endpoint para encurtar.
+  - Usuários autenticados devem ter seus URLs registrados como pertencentes a eles.
+  - Um usuário autenticado pode listar, editar o endereço de destino e excluir URLs encurtadas por ele.
+- **Contabilização de Acessos**: Todo acesso a qualquer URL encurtada deve ser contabilizado no sistema.
+- **Listagem de URLs**: Ao listar os URLs, deve aparecer a quantidade de cliques.
+- **Registros Atualizados**: Todos os registros devem ter uma forma de saber quando foram atualizados.
+- **Deleção Lógica**: Os registros só poderão ser deletados logicamente do banco, com um campo que guarda a data de exclusão. Se a data estiver nula, o registro é válido; se preenchida, foi excluído e não pode ser lido ou escrito.
 
-```bash
-$ npm install
-```
+## Instruções para Execução
 
-## Running the app
+Para rodar a aplicação, execute o comando:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker compose up
 ```
 
-## Test
+Para iniciar o servidor, é necessário ter um arquivo .env com as seguintes credenciais:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+DATABASE_URL="postgresql://admin:admin@localhost:5432/api?schema=public"
+JWT_SECRET=cfd61b8a7397fa7c10b2ae548f5bfaef
+BASE_URL="http://localhost:3000"
 ```
 
-## Support
+O comando para iniciar o servidor é:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+```bash
+npm run start:dev
+```
